@@ -1,0 +1,30 @@
+[
+  {"A": ["Apple", "Acorn", "Angel"]},
+  {"B": ["Ball", "Bear", "Balloon", "Book", "Bell"]},
+  {"C": ["Car", "Crayon", "Cookie", "Carrot", "Clock"]},
+  {"D": ["Dog", "Doughnut", "Duck", "Dinosaur"]},
+  {"E": ["Elephant", "Ear", "Egg"]},
+  {"F": ["Frog", "Fish", "Flowers"]},
+  {"G": ["Golf", "Grapes"]},
+  {"H": ["House", "Heart", "Hat", "Hand"]},
+  {"I": ["India", "Ice-Cream"]},
+  {"J": ["Juggle", "Judge"]},
+  {"K": ["Koala", "Kitten", "King"]},
+  {"L": ["Lion", "Lemon"]},
+  {"M": ["Milk", "Monkey"]},
+  {"N": ["Night", "Nose"]},
+  {"O": ["Orange", "Owl"]},
+  {"P": ["Penguin"]},
+  {"Q": ["Queen"]},
+  {"R": ["Rainbow"]},
+  {"S": ["Snail", "Shoe"]},
+  {"T": ["Train", "Truck"]},
+  {"U": ["Umbrella"]},
+  {"V": ["Violin", "Victory"]},
+  {"W": ["Water", "Whale", "Wolf", "Watermelon"]},
+  {"X": ["Xenon"]},
+  {"Y": ["Yoga", "Yak"]},
+  {"Z": ["Zebra"]}
+]
+
+
