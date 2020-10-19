@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useReducer, useDebugValue } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 
 import './App.css';
+import './styles/scss/layout.scss';
+
 import github from './images/github.svg';
 import fast from './images/fast.png';
 import slow from './images/slow.png';
@@ -119,6 +121,7 @@ const App = () => {
     <div className="App">
       <h1>{getChar(charWordPosition.char)}</h1>
       <h2>{getWord(charWordPosition.char, charWordPosition.word)}</h2>
+
       <div id="IconContainer" className={getWord(charWordPosition.char, charWordPosition.word)} />
 
       <footer className="Footer">
