@@ -1,129 +1,142 @@
+import React, { useState, useEffect, useReducer, useDebugValue } from 'react';
 
-import React from 'react'
+import './App.css';
+import github from './images/github.svg';
+import fast from './images/fast.png';
+import slow from './images/slow.png';
+import play from './images/play.png';
+import pause from './images/pause.png';
 
-import './App.css'
-import bitbucket from './images/bitbucket.png'
-import mail from './images/mail.png'
-import fast from './images/fast.png'
-import slow from './images/slow.png'
-import play from './images/play.png'
-import pause from './images/pause.png'
+import alphabet from './alphabet.json';
 
-import alphabet from './alphabet.json'
+const App = () => {
+  const dictionary = alphabet;
 
-class App extends React.Component {
-  constructor (props) {
-    super(props)
-    this.dictionary = alphabet
-    this.state = { charIndex: 0, wordIndex: 0, interval: 5000, paused: false }
-  }
+  const [intervalTime, setIntervalTime] = useState(2000);
+  const [paused, setPaused] = useState(false);
+  const [intervalObj, setIntervalObj] = useState(null);
+  const getWordCount = (theIndex) => {
+    console.log(theIndex);
+    return Object.values(dictionary[theIndex])[0].length;
+  };
 
-  componentDidMount () {
-    this.timerID = setInterval(
-      () => this.tick(),
-      5000
-    )
-  }
+  const incrementReducer = (charWordPosition, { type, payload }) => {
+    switch (type) {
+      case 'increment':
+        // eslint-disable-next-line no-case-declarations
+        const charIndex = charWordPosition.char;
+        const wordIndex = charWordPosition.word;
+        let nextWordIndex = 0;
+        let nextCharIndex = charIndex;
+        const currentWordCount = getWordCount(charIndex);
+        if (wordIndex +1 >= currentWordCount) {
+          nextWordIndex = 0;
+        }
+        else {
+          nextWordIndex = wordIndex + 1;
+        }
 
-  componentWillUnmount () {
-    clearInterval(this.timerID)
-  }
+        if (nextWordIndex === 0) {
+          if (charIndex +1 >= dictionary.length) {
+            nextCharIndex = 0;
+          } else {
+            nextCharIndex = nextCharIndex + 1;
+          }
+        }
 
-  tick () {
-    this.advance()
-  }
+        return {
+          char: nextCharIndex,
+          word: nextWordIndex,
+        };
+      case 'reset':
+        return {char: 0, word: 0};
+      default:
+        throw new Error();
+    }
+  };
 
-  resetTimer = () => {
-    clearInterval(this.timerID)
-    this.timerID = setInterval(
-      () => this.tick(),
-      this.state.interval)
-  }
+  const [charWordPosition, dispatch] = useReducer(incrementReducer, {char:0, word:0});
+  const advance = () => {
+    dispatch({ type: 'increment' });
+  };
 
-  pauseToggle = () => {
-    if (this.state.paused === true) {
-      this.setState({paused: false})
-      this.timerID = setInterval(
-        () => this.tick(),
-        this.state.interval)
+  useEffect(() => {
+    const intObj = setInterval(() => {
+      advance();
+    }, intervalTime);
+    setIntervalObj(intObj);
+    return () => clearInterval(intObj);
+  }, []);
+
+
+  const pauseToggle = () => {
+    if (paused === true) {
+      setPaused(false);
+      setIntervalObj(setInterval(
+        () => advance(),
+        intervalTime,
+      ));
     } else {
-      this.setState({paused: true})
-      clearInterval(this.timerID)
+      setPaused(true);
+      clearInterval(intervalObj);
     }
-  }
+  
+  };
 
-  getLabel = () => {
-    if (this.state.paused === true) {
-      return play
-    } else {
-      return pause
+  const getLabel = () => {
+    if (paused === true) {
+      return play;
     }
-  }
+    return pause;
+  };
 
-  speedUp = () => {
-    this.setState({
-      paused: false,
-      interval: this.state.interval <= 2000 ? 1000 : this.state.interval - 1000
-    })
-    this.resetTimer()
-  }
+  const resetTimer = () => {
+    clearInterval(intervalObj);
+    setIntervalObj(setInterval(
+      () => advance(),
+      intervalTime,
+    ));
+  };
+  
+  const speedUp = () => {
+    setPaused(false);
+    setIntervalTime(intervalTime <= 2000 ? 1000 : intervalTime - 1000);
+    resetTimer();
+  };
 
-  slowDown = () => {
-    this.setState({
-      paused: false,
-      interval: this.state.interval >= 30000 ? 30000 : this.state.interval + 1000
-    })
-    this.resetTimer()
-  }
+  const slowDown = () => {
+    setPaused(false);
+    setIntervalTime(intervalTime >= 30000 ? 30000 : intervalTime + 1000);
+    resetTimer();
+  };
 
-  advance () {
-    var nextChar = this.state.charIndex
-    var nextWord = this.state.wordIndex + 1
-    var currentWordLength = Object.values(this.dictionary[nextChar])[0].length
-    if (nextWord === currentWordLength) {
-      nextWord = 0
-      nextChar = nextChar + 1
-    }
+  const getChar = (acharIndex) => Object.keys(dictionary[acharIndex])[0];
 
-    if (nextChar === this.dictionary.length) {
-      nextChar = 0
-      nextWord = 0
-    }
+  const getWord = (acharIndex, awordIndex) => Object.values(dictionary[acharIndex])[0][awordIndex];
 
-    this.setState({
-      charIndex: nextChar,
-      wordIndex: nextWord
-    })
-  }
+  return (
+    <>
+    <div className="App">
+      <h1>{getChar(charWordPosition.char)}</h1>
+      <h2>{getWord(charWordPosition.char, charWordPosition.word)}</h2>
+      <div id="IconContainer" className={getWord(charWordPosition.char, charWordPosition.word)} />
 
-  getChar (charIndex) {
-    return Object.keys(this.dictionary[charIndex])[0]
-  }
-  getWord (charIndex, wordIndex) {
-    return Object.values(this.dictionary[charIndex])[0][wordIndex]
-  }
+      <footer className="Footer">
+        <button className="Subtle-button" onClick={slowDown}><img alt="slow down" src={slow} /></button>
+        <button className="Subtle-button" onClick={pauseToggle}><img alt="pause/play" src={getLabel()} /></button>
+        <button className="Subtle-button" onClick={speedUp}><img alt="speed up" src={fast} /></button>
 
-  render () {
-    return (
-      <div className="App">
-        <h1>{this.getChar(this.state.charIndex)}</h1>
-        <h2>{this.getWord(this.state.charIndex, this.state.wordIndex)}</h2>
-        <div id="IconContainer" className={ this.getWord(this.state.charIndex, this.state.wordIndex) } ></div>
+      </footer>
 
-        <footer className="Footer">
-          <button className="Subtle-button" onClick={this.slowDown}><img alt="slow down" src={slow}/></button>
-          <button className="Subtle-button" onClick={this.pauseToggle}><img alt= "pause/play" src={this.getLabel()}/></button>
-          <button className="Subtle-button" onClick={this.speedUp}><img alt="speed up" src={fast}/></button>
-          <div className="Info-Row">
-            <a href="https://bitbucket.org/steventhevictor/alphabet_flashcards">
-              <img className="Info-icon" alt="source code" src={bitbucket}/></a>
-            <a href="mailto:sv@stevenvictor.net">
-              <img className="Info-icon" alt="email" src={mail}/></a>
-          </div>
-        </footer>
+    </div>
+
+        <div className="Info-Row">
+        <a href="https://github.com/smycynek/alphabet_flashcards">
+          <img className="Info-icon" alt="source code" src={github} />
+        </a>
       </div>
-    )
-  }
-}
+      </>
+  );
+};
 
-export default App
+export default App;
