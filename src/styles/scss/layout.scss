@@ -18,7 +18,7 @@ body {
 }
 
 h1 {
-  font-size: 16em;
+  font-size: 14em;
   color: $letter-color;
   padding: 3px;
   margin-top: 15px;
@@ -49,12 +49,12 @@ h2 {
 }
 
 .Subtle-button {
+  background-color: white;
   margin-top:3em;
   margin-left:.25em;
   margin-right:.25em;
-  border-radius: .5em;
-  border:0px;
   border-style: none;
+  border-color: white;
 }
 
 .Footer {
@@ -62,10 +62,9 @@ h2 {
   padding:5px;
 }
 
-
 #IconContainer {
-  height:130px;
-  font-size: 150px; 
+  height:180px;
+  font-size: 180px; 
   margin-top: 0px;
   padding-bottom: 0px;
   padding-top: 0px;

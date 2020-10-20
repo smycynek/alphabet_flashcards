@@ -31,6 +31,12 @@ const App = () => {
     });
   };
 
+  const advanceManual = () => {
+    setPaused(true);
+    clearInterval(intervalObj);
+    advance();
+  }
+
   useEffect(() => {
     const intObj = setInterval(() => {
       advance();
@@ -87,16 +93,19 @@ const App = () => {
   return (
     <>
     <div className="App">
-      <h1>{getChar(index)}</h1>
-      <h2>{getWord(index)}</h2>
 
-      <div id="IconContainer" className={getWord(index)} />
+      <h1 onClick={advanceManual} >{getChar(index)}
+      </h1>
+      <h2 onClick={advanceManual} >{getWord(index)}</h2>
+
+      <div onClick={advanceManual} id="IconContainer" className={getWord(index)} />
 
       <footer className="Footer">
+        
         <button className="Subtle-button" onClick={slowDown}><img alt="slow down" src={slow} /></button>
         <button className="Subtle-button" onClick={pauseToggle}><img alt="pause/play" src={getLabel()} /></button>
         <button className="Subtle-button" onClick={speedUp}><img alt="speed up" src={fast} /></button>
-
+        <div><small>Click letter/image to advance once, or play/pause to automate.</small></div>
       </footer>
 
     </div>
