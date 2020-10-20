@@ -15,6 +15,11 @@
   content: "\01F47C\01F3FD";
 }
 
+.Banana::after 
+{
+content: "\01F34C";
+}
+
 .Ball::after
 {
   content: "\026BD";
@@ -128,6 +133,16 @@
   content: "\026F3";
 }
 
+.Gorilla::after 
+{
+  content: "\01F98D";
+}
+
+.Gear::after 
+{
+  content: "\02699";
+}
+
 .Grapes::after
 {
   content: "\01F347";
@@ -207,7 +222,9 @@
   content: "\01F435";
 }
 
-
+.Magnet::after {
+  content: "\01F9F2";
+}
 .Night::after
 {
   content: "\01F303";
@@ -233,6 +250,15 @@
   content: "\01F427";
 }
 
+.Pizza::after {
+  content: "\01F355";
+}
+
+.Panda::after 
+{
+  content: "\01F43C";
+}
+
 .Queen::after 
 {
   content: "\1F478\1F3FD";
@@ -241,6 +267,10 @@
 .Rainbow::after
 {
   content: "\01F308";
+}
+
+.Rabbit::after {
+  content: "\01F430";
 }
 
 .Snail::after
@@ -263,6 +293,9 @@
   content: "\01F69A";
 }
 
+.Tree::after {
+  content: "\01F333";
+}
 .Umbrella::after
 {
   content: "\02602";
