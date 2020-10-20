@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 
-import './App.css';
+import './styles/scss/emojis.scss';
 import './styles/scss/layout.scss';
 
 import github from './images/github.svg';
