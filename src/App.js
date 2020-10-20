@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './styles/scss/emojis.scss';
 import './styles/scss/layout.scss';
@@ -12,54 +12,23 @@ import pause from './images/pause.png';
 import alphabet from './alphabet.json';
 
 const App = () => {
+  console.log(alphabet);
+  console.log(alphabet[0])
   const dictionary = alphabet;
+  dictionary.sort();
 
   const [intervalTime, setIntervalTime] = useState(2000);
   const [paused, setPaused] = useState(false);
   const [intervalObj, setIntervalObj] = useState(null);
-  const getWordCount = (theIndex) => {
-    console.log(theIndex);
-    return Object.values(dictionary[theIndex])[0].length;
-  };
+  const [index, setIndex] = useState(0);
 
-  const incrementReducer = (charWordPosition, { type, payload }) => {
-    switch (type) {
-      case 'increment':
-        // eslint-disable-next-line no-case-declarations
-        const charIndex = charWordPosition.char;
-        const wordIndex = charWordPosition.word;
-        let nextWordIndex = 0;
-        let nextCharIndex = charIndex;
-        const currentWordCount = getWordCount(charIndex);
-        if (wordIndex +1 >= currentWordCount) {
-          nextWordIndex = 0;
-        }
-        else {
-          nextWordIndex = wordIndex + 1;
-        }
-
-        if (nextWordIndex === 0) {
-          if (charIndex +1 >= dictionary.length) {
-            nextCharIndex = 0;
-          } else {
-            nextCharIndex = nextCharIndex + 1;
-          }
-        }
-
-        return {
-          char: nextCharIndex,
-          word: nextWordIndex,
-        };
-      case 'reset':
-        return {char: 0, word: 0};
-      default:
-        throw new Error();
-    }
-  };
-
-  const [charWordPosition, dispatch] = useReducer(incrementReducer, {char:0, word:0});
   const advance = () => {
-    dispatch({ type: 'increment' });
+    setIndex((prev) => {
+      if (prev + 1 >= dictionary.length) {
+        return 0;
+      }
+      return prev + 1;
+    });
   };
 
   useEffect(() => {
@@ -112,17 +81,16 @@ const App = () => {
     resetTimer();
   };
 
-  const getChar = (acharIndex) => Object.keys(dictionary[acharIndex])[0];
-
-  const getWord = (acharIndex, awordIndex) => Object.values(dictionary[acharIndex])[0][awordIndex];
+  const getChar = (index) => dictionary[index][0];
+  const getWord = (index) => dictionary[index];
 
   return (
     <>
     <div className="App">
-      <h1>{getChar(charWordPosition.char)}</h1>
-      <h2>{getWord(charWordPosition.char, charWordPosition.word)}</h2>
+      <h1>{getChar(index)}</h1>
+      <h2>{getWord(index)}</h2>
 
-      <div id="IconContainer" className={getWord(charWordPosition.char, charWordPosition.word)} />
+      <div id="IconContainer" className={getWord(index)} />
 
       <footer className="Footer">
         <button className="Subtle-button" onClick={slowDown}><img alt="slow down" src={slow} /></button>
